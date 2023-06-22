@@ -34,11 +34,11 @@ import poweredImage from './assets/powered.png'
                           />
 
                         <button>Calcular</button>
-
+                                                                                                                                                                                      
                     </div>
-                    
+
                     <div className={styles.rightSide}>
-                      
+                    
                     </div>
 
                   </div>
