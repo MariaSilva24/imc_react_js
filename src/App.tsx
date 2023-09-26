@@ -1,7 +1,30 @@
+import React, {useState} from 'react'
 import styles from './App.module.css'
 import poweredImage from './assets/powered.png'
+import { levels, calculateImc, Level } from './helpers/imc';
+import { GridItem } from './Components/GridItem/Index';
+import leftarrow from './assets/leftarrow.png'
+
 
           const App = () => {
+
+            const [weight, setWeight] = useState(0);
+            const [height, setHeight] = useState(0);
+            const [toShow, SetToShow] = useState<Level | null>(null)
+
+            const handleCalc = () => {
+              if (weight && height){
+                SetToShow( calculateImc(height,weight));
+              }
+              else {
+                alert('Informe o Peso e a Altura');
+              }
+            }
+            const handleBack = () =>{
+              SetToShow(null);
+              setHeight(0);
+              setWeight(0);
+            }
             return(
               <div className={styles.main}> {/*Div primaria que abriga todas as outras*/}
 
@@ -26,19 +49,35 @@ import poweredImage from './assets/powered.png'
                         <input
                           type="number"
                           placeholder="Informe sua altura. Ex. 1.50"
-                          />
+                          value={height > 0 ? height : ''}
+                          onChange={t => setHeight(parseFloat (t.target.value))}/>
 
                         <input 
                           type="number"
                           placeholder="Informe sua peso. Ex. 60"
-                          />
+                          value={weight > 0 ? weight : ''}
+                          onChange={t => setWeight(parseFloat(t.target.value))}
+                        />
 
-                        <button>Calcular</button>
+                        <button onClick={handleCalc}>Calcular</button>
                                                                                                                                                                                       
                     </div>
 
                     <div className={styles.rightSide}>
-                    
+                      {!toShow && 
+                      <div className={styles.grid}>
+                        {levels.map( (item) => (
+                          <GridItem item={item}/>
+                        ))}
+                      </div>
+                      }
+                      {toShow &&
+                        <div className={styles.rightBig}> 
+                          <div className={styles.rightArrow} onClick={handleBack}>
+                            <img src={leftarrow} width={25}/>
+                          </div>
+                          <GridItem item={toShow}/>
+                        </div>}
                     </div>
 
                   </div>
